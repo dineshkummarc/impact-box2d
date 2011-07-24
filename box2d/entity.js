@@ -28,19 +28,19 @@ ig.Box2DEntity = ig.Entity.extend({
 			(this.pos.y + this.size.y / 2) * b2.SCALE
 		);
 		
+		bodyDef.type = b2.Body.b2_dynamicBody;
+		
 		this.body = ig.world.CreateBody(bodyDef);
 		
-		var shapeDef = new b2.PolygonDef();
+		var shapeDef = new b2.PolygonShape();
 		shapeDef.SetAsBox(
 			this.size.x / 2 * b2.SCALE,
 			this.size.y / 2 * b2.SCALE
 		);
 		
-		shapeDef.density = 1;
 		//shapeDef.restitution = 0.0;
 		//shapeDef.friction = 0.9;
-		this.body.CreateShape(shapeDef);
-		this.body.SetMassFromShapes();
+		this.body.CreateFixture2(shapeDef, 1);
 	},
 	
 	update: function() {		

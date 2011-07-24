@@ -31,15 +31,8 @@ ig.Box2DGame = ig.Game.extend({
 	
 	
 	createWorldFromMap: function( origData, width, height, tilesize ) {	
-		var worldBoundingBox = new b2.AABB();
-		worldBoundingBox.lowerBound.Set( 0, 0 );
-		worldBoundingBox.upperBound.Set(
-			(width + 1) * tilesize * b2.SCALE,
-			(height + 1) * tilesize  * b2.SCALE
-		);
-		
 		var gravity = new b2.Vec2( 0, this.gravity * b2.SCALE );
-		var world = new b2.World( worldBoundingBox, gravity, true );
+		var world = new b2.World(gravity, true );
 		
 		
 		// We need to delete those tiles that we already processed. The original
@@ -70,12 +63,12 @@ ig.Box2DGame = ig.Game.extend({
 			);
 			
 			var body = world.CreateBody( bodyDef );
-			var shape = new b2.PolygonDef();
+			var shape = new b2.PolygonShape();
 			shape.SetAsBox(
 				rect.width * tilesize / 2 * b2.SCALE,
 				rect.height * tilesize / 2 * b2.SCALE
 			);
-			body.CreateShape( shape );
+			body.CreateFixture2( shape );
 		}
 		
 		return world;
@@ -118,6 +111,7 @@ ig.Box2DGame = ig.Game.extend({
 	
 	update: function() {
 		ig.world.Step( ig.system.tick, 5 );
+		ig.world.ClearForces();
 		this.parent();
 	},
 	
